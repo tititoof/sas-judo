@@ -1,0 +1,117 @@
+version: '3.4'
+
+# Network configuration
+networks:
+  cictl:
+    driver: bridge
+
+services:
+  # Actioncable 
+  redis:
+    image: "redis:alpine"
+    command: redis-server
+
+    ports:
+      - "6379:6379"
+
+    volumes:
+      - $PWD/redis/data:/var/lib/redis
+      - $PWD/redis/conf:/usr/local/etc/redis/redis.conf
+    networks:
+      cictl:
+        aliases:
+          - redis.localhost
+  # Web DB
+  db:
+    image: postgres
+    volumes:
+      - ./db/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: dev_password
+    networks:
+      cictl:
+        aliases:
+          - db.localhost
+  # Admin DB
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    volumes:
+        - ./db/pgadmin:/root/.pgadmin
+    ports:
+      - "3002:80"
+    networks:
+      - cictl
+  # Web Application
+  backend:
+    build: ./backend
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec foreman start -f Procfile.dev"
+    volumes:
+      - ./backend:/myapp
+      - ./backend/vendor:/usr/local/bundle
+      - ./.yarn:/.cache/yarn
+    ports:
+      - "3000:3000"
+      - "3035:3035"
+    user: "${CURRENT_UID}:${CURRENT_GID}"
+    depends_on:
+      - db
+      - redis
+    networks:
+      cictl:
+        aliases:
+          - backend.localhost
+  # Front application
+  frontend:
+    image: node:lts
+    command: yarn run dev
+    volumes:
+      - ./frontend:/usr/src/app
+    working_dir: /usr/src/app
+    ports:
+      - "3001:3000"
+    user: "${CURRENT_UID}:${CURRENT_GID}"
+    environment:
+      HOST: 0.0.0.0
+    depends_on:
+      - backend
+    networks:
+      cictl:
+        aliases:
+          - frontend.localhost
+        
+  cypress:
+    image: cypress
+    build: ./e2e
+    depends_on:
+      - frontend
+    links:
+      - frontend
+      - backend
+    command: ["--browser", "chrome"]
+    environment:
+      - CYPRESS_baseUrl=http://frontend:3000
+    user: "${CURRENT_UID}:${CURRENT_GID}"
+    volumes:
+      - ./e2e/cypress:/app/cypress
+      - ./e2e/cypress.json:/app/cypress.json
+      - ./e2e/coverage:/app/coverage
+      - ./frontend:/usr/src/app
+      - ./e2e/.nyc_output:/app/.nyc_output
+    networks:
+      cictl:
+        aliases:
+          - cypress.localhost
+  # Open project
+  #openproject:
+  #  image: "openproject/community:latest"
+  #  ports: 
+  #    - "8089:80"
+  #  volumes:
+  #    - ./openproject/pgdata:/var/openproject/pgdata
+  #    - ./openproject/assets:/var/openproject/assets
+  #  environment: 
+  #    - SECRET_KEY_BASE=secret
