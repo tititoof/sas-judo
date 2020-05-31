@@ -1,0 +1,10 @@
+{
+  "baseUrl": "http://frontend:3000",
+  "fixturesFolder": "cypress/fixtures",
+  "reporter": "junit",
+  "reporterOptions": {
+    "mochaFile": "cypress/results/output.xml"
+  },
+  "chromeWebSecurity": false
+  
+}

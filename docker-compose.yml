@@ -34,7 +34,7 @@ services:
           - db.localhost
   # Admin DB
   pgadmin:
-    container_name: pgadmin_container
+    #container_name: pgadmin_container
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
@@ -53,6 +53,7 @@ services:
       - ./backend:/myapp
       - ./backend/vendor:/usr/local/bundle
       - ./.yarn:/.cache/yarn
+      - ./.gem:/.gem
     ports:
       - "3000:3000"
       - "3035:3035"
@@ -85,7 +86,7 @@ services:
         
   cypress:
     image: cypress
-    build: ./e2e
+    build: ./integration
     depends_on:
       - frontend
     links:
@@ -96,11 +97,11 @@ services:
       - CYPRESS_baseUrl=http://frontend:3000
     user: "${CURRENT_UID}:${CURRENT_GID}"
     volumes:
-      - ./e2e/cypress:/app/cypress
-      - ./e2e/cypress.json:/app/cypress.json
-      - ./e2e/coverage:/app/coverage
+      - ./integration/cypress:/app/cypress
+      - ./integration/cypress.json:/app/cypress.json
+      - ./integration/coverage:/app/coverage
       - ./frontend:/usr/src/app
-      - ./e2e/.nyc_output:/app/.nyc_output
+      - ./integration/.nyc_output:/app/.nyc_output
     networks:
       cictl:
         aliases:

@@ -1,4 +1,4 @@
-FROM ruby:2.6.3
+FROM ruby:2.7.1
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client apt-transport-https ca-certificates
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -10,6 +10,7 @@ RUN mkdir /myapp
 WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
+RUN gem install bundler:1.17.3
 RUN bundle install
 COPY . /myapp
 
