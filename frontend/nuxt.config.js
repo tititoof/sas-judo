@@ -43,7 +43,9 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    // Vue mq
+    ['nuxt-mq']
   ],
   /*
    ** Axios module configuration
@@ -57,7 +59,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,
@@ -67,14 +69,37 @@ export default {
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
+        },
+        light: {
+          primary: '#4caf50',
+          secondary: '#8bc34a',
+          accent: '#009688',
+          error: '#f44336',
+          warning: '#ff5722',
+          info: '#cddc39',
+          success: '#673ab7'
         }
       }
+    }
+  },
+  mq: {
+    defaultBreakpoint: 'sm',
+    breakpoints: {
+      sm: 450,
+      md: 1250,
+      lg: Infinity
     }
   },
   /*
    ** Build configuration
    */
   build: {
+    babel: {
+      presets({ isServer }) {
+        return [['@nuxt/babel-preset-app', { loose: true }]]
+      },
+      plugins: [['istanbul']]
+    },
     /*
      ** You can extend webpack config here
      */

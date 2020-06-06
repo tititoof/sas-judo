@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="0" tests="1" failures="1">
+  <testsuite name="Root Suite" timestamp="2020-06-05T05:08:35" tests="0" file="cypress/integration/default.spec.js" failures="0" time="0">
+  </testsuite>
+  <testsuite name="Home" timestamp="2020-06-05T05:08:36" tests="1" failures="1" time="0">
+    <testcase name="Home Should display login form." time="0" classname="Should display login form.">
+      <failure message="Timed out retrying: Expected to find content: &apos;Welcome to the Vuetify + Nuxt.js template&apos; but never did." type="AssertionError"><![CDATA[AssertionError: Timed out retrying: Expected to find content: 'Welcome to the Vuetify + Nuxt.js template' but never did.
+    at Context.eval (http://frontend:3000/__cypress/tests?p=cypress/integration/default.spec.js:17:8)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>
