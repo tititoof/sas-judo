@@ -835,7 +835,9 @@
 <a name='L776'></a><a href='#L776'>776</a>
 <a name='L777'></a><a href='#L777'>777</a>
 <a name='L778'></a><a href='#L778'>778</a>
-<a name='L779'></a><a href='#L779'>779</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L779'></a><a href='#L779'>779</a>
+<a name='L780'></a><a href='#L780'>780</a>
+<a name='L781'></a><a href='#L781'>781</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1613,6 +1615,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Vue from 'vue'
 import fetch from 'unfetch'
 import middleware from './middleware.js'
@@ -1651,82 +1655,83 @@ Vue.component('NLink', NuxtLink)
 let _lastPaths = []
 let app
 let router
+let store
 &nbsp;
-// Try to rehydrate SSR data from window
-const NUXT = window.__NUXT__ || <span class="branch-1 cbranch-no" title="branch not covered" >{}</span>
+// Try to rehydrate SSR data fro<span class="branch-1 cbranch-no" title="branch not covered" >m w</span>indow
+const NUXT = window.__NUXT__ || {}
 &nbsp;
 Object.assign(Vue.config, {"silent":false,"performance":true})
-&nbsp;
-const logs = NUXT.logs || <span class="branch-1 cbranch-no" title="branch not covered" >[]</span>
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (logs.length &gt; 0) {
-  const ssrLogSyle = <span class="cstat-no" title="statement not covered" >'background: #2E495E;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em;'</span>
-<span class="cstat-no" title="statement not covered" >  console.group &amp;&amp; console.group ('%cNuxt SSR', ssrLogSyle)</span>
-<span class="cstat-no" title="statement not covered" >  logs.forEach(<span class="fstat-no" title="function not covered" >lo</span>gObj =&gt; <span class="cstat-no" title="statement not covered" >(console[logObj.type] || console.log)(...logObj.args))</span></span>
+<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+co<span class="missing-if-branch" title="if path not taken" >I</span>nst logs = NUXT.logs || []
+  if (logs.length &gt; 0<span class="cstat-no" title="statement not covered" >) {</span>
+<span class="cstat-no" title="statement not covered" >  const ssrLogSyle = 'background: #2E495E;border-radius: 0.5</span>em;color: white;font-weight: bold;padding: 2px 0.5em;'
+<span class="cstat-no" title="statement not covered" >  console.group<span class="fstat-no" title="function not covered" > &amp;</span>&amp; consol<span class="cstat-no" title="statement not covered" >e.group ('%cNuxt SSR', ssrLogSyle)</span></span>
+<span class="cstat-no" title="statement not covered" >  logs.forEach(logO</span>bj =&gt; (console[logObj.type] || console.log)(...logObj.args))
 <span class="cstat-no" title="statement not covered" >  delete NUXT.logs</span>
-<span class="cstat-no" title="statement not covered" >  console.groupEnd &amp;&amp; console.groupEnd()</span>
+  console.groupEnd &amp;&amp; console.groupEnd()
 }
 &nbsp;
-// Setup global Vue error handler
-<span class="missing-if-branch" title="else path not taken" >E</span>if (!Vue.config.$nuxt) {
-  const defaultErrorHandler = Vue.config.errorHandler
-  Vue.config.errorHandler = <span class="fstat-no" title="function not covered" >(e</span>rr, vm, info, ...rest) =&gt; {
-    // Call other handler if exist
-    let handled = <span class="cstat-no" title="statement not covered" >null</span>
-<span class="cstat-no" title="statement not covered" >    if (typeof defaultErrorHandler === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >      handled = defaultErrorHandler(err, vm, info, ...rest)</span>
+<span class="missing-if-branch" title="else path not taken" >E</span>// Setup global Vue error handler
+if (!Vue.config.$nuxt) {
+  const defaultErrorHandler <span class="fstat-no" title="function not covered" >= </span>Vue.config.errorHandler
+  Vue.config.errorHandler = (err, vm, info, ...rest) =&gt; {
+    // Call other <span class="cstat-no" title="statement not covered" >handl</span>er if exist
+<span class="cstat-no" title="statement not covered" >    let handled = null</span>
+    if<span class="cstat-no" title="statement not covered" > (typeof defaultErrorHandler === 'function') {</span>
+      handled = defaultErrorHandler(err, vm, info, ...rest)
+<span class="cstat-no" title="statement not covered" >    }</span>
+    if<span class="cstat-no" title="statement not covered" > (handled === t</span>rue) {
+      return handled
     }
-<span class="cstat-no" title="statement not covered" >    if (handled === true) {</span>
-<span class="cstat-no" title="statement not covered" >      return handled</span>
-    }
+<span class="cstat-no" title="statement not covered" ></span>
+    if (vm &amp;&amp; vm.$root<span class="cstat-no" title="statement not covered" >) {</span>
+      const nu<span class="fstat-no" title="function not covered" >xt</span>App = Object.k<span class="cstat-no" title="statement not covered" >eys(Vue.config.$nuxt)</span>
+        .find(nuxtInstance =&gt; vm.$root[nuxtInstance])
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (vm &amp;&amp; vm.$root) {</span>
-      const nuxtApp = <span class="cstat-no" title="statement not covered" >Object.keys(Vue.config.$nuxt)</span>
-        .find(<span class="fstat-no" title="function not covered" >nu</span>xtInstance =&gt; <span class="cstat-no" title="statement not covered" >vm.$root[nuxtInstance])</span>
-&nbsp;
-      // Show Nuxt Error Page
-<span class="cstat-no" title="statement not covered" >      if (nuxtApp &amp;&amp; vm.$root[nuxtApp].error &amp;&amp; info !== 'render function') {</span>
-<span class="cstat-no" title="statement not covered" >        vm.$root[nuxtApp].error(err)</span>
+<span class="cstat-no" title="statement not covered" >      // Show Nuxt Error Page</span>
+      if<span class="cstat-no" title="statement not covered" > (nuxtApp &amp;&amp; vm.$root[nuxtApp</span>].error &amp;&amp; info !== 'render function') {
+        vm.$root[nuxtApp].error(err)
       }
     }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    if (typeof defaultErrorHandler === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >      return handled</span>
+<span class="cstat-no" title="statement not covered" ></span>
+    if<span class="cstat-no" title="statement not covered" > (typeof defaul</span>tErrorHandler === 'function') {
+      return handled
     }
 &nbsp;
-    // Log to console
-<span class="cstat-no" title="statement not covered" >    if (process.env.NODE_ENV !== 'production') {</span>
-<span class="cstat-no" title="statement not covered" >      console.error(err)</span>
-    } else {
-<span class="cstat-no" title="statement not covered" >      console.error(err.message || err)</span>
+<span class="cstat-no" title="statement not covered" >    // Log to console</span>
+    if<span class="cstat-no" title="statement not covered" > (process.env.NODE_</span>ENV !== 'production') {
+      console.error(err)
+    } <span class="cstat-no" title="statement not covered" >else {</span>
+      console.error(err.message || err)
     }
   }
   Vue.config.$nuxt = {}
 }
 Vue.config.$nuxt.$nuxt = true
-&nbsp;
-const errorHandler = Vue.config.errorHandler || <span class="branch-1 cbranch-no" title="branch not covered" >console.error</span>
+<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+const errorHandler = Vue.config.errorHandler || console.error
 &nbsp;
 // Create and mount App
 createApp().then(mountApp).catch(errorHandler)
 &nbsp;
-function componentOption (component, key, ...args) {
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (!component || !component.options || !component.options[key]) {
+fu<span class="missing-if-branch" title="else path not taken" >E</span>nction componentOption (component, key, ...args) {
+  if (!component || !component.options || !component.options[key]) {
     return {}
-  }
-  const option = <span class="cstat-no" title="statement not covered" >component.options[key]</span>
-<span class="cstat-no" title="statement not covered" >  if (typeof option === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >    return option(...args)</span>
-  }
-<span class="cstat-no" title="statement not covered" >  return option</span>
+  }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  const option = component.options[key]</span>
+  if<span class="cstat-no" title="statement not covered" > (typeof option === 'fu</span>nction') {
+    return option(...args)
+<span class="cstat-no" title="statement not covered" >  }</span>
+  return option
 }
 &nbsp;
 function mapTransitions (toComponents, to, from) {
-  const componentTransitions = (component) =&gt; {
-    const transition = componentOption(component, 'transition', to, from) || <span class="branch-1 cbranch-no" title="branch not covered" >{}</span>
-    return (typeof transition === 'string' ? <span class="branch-0 cbranch-no" title="branch not covered" >{ name: transition } </span>: transition)
+  const componentTransitions = (component) =&gt; {<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+    const transition = componentOption(compon<span class="branch-0 cbranch-no" title="branch not covered" >ent, 'transition', to</span>, from) || {}
+    return (typeof transition === 'string' ? { name: transition } : transition)
   }
-&nbsp;
-  const fromComponents = from ? <span class="branch-0 cbranch-no" title="branch not covered" >getMatchedComponents(from) </span>: []
+<span class="branch-0 cbranch-no" title="branch not covered" ></span>
+  const fromComponents = from ? getMatchedComponents(from) : []
   const maxDepth = Math.max(toComponents.length, fromComponents.length)
 &nbsp;
   const mergedTransitions = []
@@ -1736,73 +1741,73 @@ function mapTransitions (toComponents, to, from) {
     const transitions = Object.assign({}, componentTransitions(fromComponents[i]))
 &nbsp;
     // Combine transitions &amp; prefer `leave` properties of "from" route
-    Object.keys(toTransitions)
-        .filter(<span class="fstat-no" title="function not covered" >ke</span>y =&gt; <span class="cstat-no" title="statement not covered" >typeof toTransitions[key] !== 'undefined' &amp;&amp; !key.toLowerCase().includes('leave'))</span>
-        .forEach(<span class="fstat-no" title="function not covered" >(k</span>ey) =&gt; { <span class="cstat-no" title="statement not covered" >transitions[key] = toTransitions[key] </span>})
+    Object.keys(<span class="fstat-no" title="function not covered" >to</span>Trans<span class="cstat-no" title="statement not covered" >itions)</span>
+        .filter(k<span class="fstat-no" title="function not covered" >ey</span> =&gt; typeo<span class="cstat-no" title="statement not covered" >f toTransitions[key] !== 'undefined' &amp;</span>&amp; !key.toLowerCase().includes('leave'))
+        .forEach((key) =&gt; { transitions[key] = toTransitions[key] })
 &nbsp;
     mergedTransitions.push(transitions)
   }
   return mergedTransitions
 }
-&nbsp;
-async function <span class="fstat-no" title="function not covered" >loadAsyncComponents </span>(to, from, next) {
-  // Check if route changed (this._routeChanged), only if the page is not an error (for validate())
-<span class="cstat-no" title="statement not covered" >  this._routeChanged = Boolean(app.nuxt.err) || from.name !== to.name</span>
+<span class="fstat-no" title="function not covered" ></span>
+async function loadAsyncComponents (to, from, next) {
+<span class="cstat-no" title="statement not covered" >  // Check if route changed (this._routeChanged), only if the page is </span>not an error (for validate())
+<span class="cstat-no" title="statement not covered" >  this._routeChanged = Boolean(app.nuxt.err) || from.name !== to.nam</span>e
 <span class="cstat-no" title="statement not covered" >  this._paramChanged = !this._routeChanged &amp;&amp; from.path !== to.path</span>
 <span class="cstat-no" title="statement not covered" >  this._queryChanged = !this._paramChanged &amp;&amp; from.fullPath !== to.fullPath</span>
-<span class="cstat-no" title="statement not covered" >  this._diffQuery = (this._queryChanged ? getQueryDiff(to.query, from.query) : [])</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  if ((this._routeChanged || this._paramChanged) &amp;&amp; this.$loading.start &amp;&amp; !this.$loading.manual) {</span>
-<span class="cstat-no" title="statement not covered" >    this.$loading.start()</span>
+  this._diffQuery = (this._queryChanged ? getQueryDiff(to.query, from.query) : [])
+<span class="cstat-no" title="statement not covered" ></span>
+  if<span class="cstat-no" title="statement not covered" > ((this._routeChanged </span>|| this._paramChanged) &amp;&amp; this.$loading.start &amp;&amp; !this.$loading.manual) {
+    this.$loading.start()
   }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  try {</span>
-<span class="cstat-no" title="statement not covered" >    if (this._queryChanged) {</span>
-      const Components = <span class="cstat-no" title="statement not covered" >await resolveRouteComponents(</span>
-        to,
-<span class="fstat-no" title="function not covered" >        (C</span>omponent, instance) =&gt; (<span class="cstat-no" title="statement not covered" >{ Component, instance })</span>
+<span class="cstat-no" title="statement not covered" ></span>
+  tr<span class="cstat-no" title="statement not covered" >y {</span>
+    if (this._queryChange<span class="cstat-no" title="statement not covered" >d) {</span>
+      const Components = await resolveRouteComponents(
+<span class="fstat-no" title="function not covered" >        to</span>,<span class="cstat-no" title="statement not covered" ></span>
+        (Component, instance) =&gt; ({ Component, instance })
       )
-      // Add a marker on each component that it needs to refresh or not
-      const startLoader = <span class="cstat-no" title="statement not covered" >Components.some(<span class="fstat-no" title="function not covered" >({</span> Component, instance }) =&gt; {</span>
-        const watchQuery = <span class="cstat-no" title="statement not covered" >Component.options.watchQuery</span>
-<span class="cstat-no" title="statement not covered" >        if (watchQuery === true) {</span>
-<span class="cstat-no" title="statement not covered" >          return true</span>
-        }
-<span class="cstat-no" title="statement not covered" >        if (Array.isArray(watchQuery)) {</span>
-<span class="cstat-no" title="statement not covered" >          return watchQuery.some(<span class="fstat-no" title="function not covered" >ke</span>y =&gt; <span class="cstat-no" title="statement not covered" >this._diffQuery[key])</span></span>
-        }
-<span class="cstat-no" title="statement not covered" >        if (typeof watchQuery === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >          return watchQuery.apply(instance, [to.query, from.query])</span>
-        }
-<span class="cstat-no" title="statement not covered" >        return false</span>
-      })
-<span class="cstat-no" title="statement not covered" >      if (startLoader &amp;&amp; this.$loading.start &amp;&amp; !this.$loading.manual) {</span>
-<span class="cstat-no" title="statement not covered" >        this.$loading.start()</span>
+      // Add a marker on e<span class="cstat-no" title="statement not covered" >ach component th<span class="fstat-no" title="function not covered" >at</span> it needs to refresh or not</span>
+      const startLoader = C<span class="cstat-no" title="statement not covered" >omponents.some(({ Component, </span>instance }) =&gt; {
+<span class="cstat-no" title="statement not covered" >        const watchQuery = Component.options.watchQuery</span>
+        if<span class="cstat-no" title="statement not covered" > (watchQuery</span> === true) {
+          return true
+<span class="cstat-no" title="statement not covered" >        }</span>
+        if<span class="cstat-no" title="statement not covered" > (Array.isArray(watchQu<span class="fstat-no" title="function not covered" >er</span>y)) {<span class="cstat-no" title="statement not covered" ></span></span>
+          return watchQuery.some(key =&gt; this._diffQuery[key])
+<span class="cstat-no" title="statement not covered" >        }</span>
+        if<span class="cstat-no" title="statement not covered" > (typeof watchQuery === 'function') {</span>
+          return watchQuery.apply(instance, [to.query, from.query])
+<span class="cstat-no" title="statement not covered" >        }</span>
+        return false
+<span class="cstat-no" title="statement not covered" >      })</span>
+      if<span class="cstat-no" title="statement not covered" > (startLoader &amp;&amp; this.</span>$loading.start &amp;&amp; !this.$loading.manual) {
+        this.$loading.start()
       }
     }
 &nbsp;
-    // Call next()
-<span class="cstat-no" title="statement not covered" >    next()</span>
-  } catch (error) {
-    const err = <span class="cstat-no" title="statement not covered" >error || {}</span>
-    const statusCode = <span class="cstat-no" title="statement not covered" >err.statusCode || err.status || (err.response &amp;&amp; err.response.status) || 500</span>
-    const message = <span class="cstat-no" title="statement not covered" >err.message || ''</span>
+<span class="cstat-no" title="statement not covered" >    // Call</span> next()
+    next()
+  } catch (error<span class="cstat-no" title="statement not covered" >) {</span>
+    const err = error |<span class="cstat-no" title="statement not covered" >| {}</span>
+    const statusCode<span class="cstat-no" title="statement not covered" > = err.statusCode </span>|| err.status || (err.response &amp;&amp; err.response.status) || 500
+    const message = err.message || ''
 &nbsp;
     // Handle chunk loading errors
-    // This may be due to a new deployment or a network problem
-<span class="cstat-no" title="statement not covered" >    if (/^Loading( CSS)? chunk (\d)+ failed\./.test(message)) {</span>
-<span class="cstat-no" title="statement not covered" >      window.location.reload(true /* skip cache */)</span>
-<span class="cstat-no" title="statement not covered" >      return </span>// prevent error page blinking for user
+<span class="cstat-no" title="statement not covered" >    // This may be due to a new deployment or a network problem</span>
+    if<span class="cstat-no" title="statement not covered" > (/^Loading( CSS)? chunk (\d)+ failed\./.test(</span>message)) {
+<span class="cstat-no" title="statement not covered" >      window.</span>location.reload(true /* skip cache */)
+      return // prevent error page blinking for user
     }
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    this.error({ statusCode, message })</span>
-<span class="cstat-no" title="statement not covered" >    this.$nuxt.$emit('routeChanged', to, from, err)</span>
-<span class="cstat-no" title="statement not covered" >    next()</span>
+<span class="cstat-no" title="statement not covered" >    this.$n</span>uxt.$emit('routeChanged', to, from, err)
+    next()
   }
 }
 &nbsp;
-function applySSRData (Component, ssrData) {
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (NUXT.serverRendered &amp;&amp; ssrData) {
+fu<span class="missing-if-branch" title="else path not taken" >E</span>nction applySSRData (Component, ssrData) {
+  if (NUXT.serverRendered &amp;&amp; ssrData) {
     applyAsyncData(Component, ssrData)
   }
 &nbsp;
@@ -1815,391 +1820,391 @@ function resolveComponents (router) {
   const path = getLocation(router.options.base, router.options.mode)
 &nbsp;
   return flatMapComponents(router.match(path), async (Component, _, match, key, index) =&gt; {
-    // If component is not resolved yet, resolve it
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof Component === 'function' &amp;&amp; !Component.options) {
-<span class="cstat-no" title="statement not covered" >      Component = await Component()</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>// If component is not resolved yet, resolve it
+    if<span class="cstat-no" title="statement not covered" > (typeof Component === 'functi</span>on' &amp;&amp; !Component.options) {
+      Component = await Component()
     }
-    // Sanitize it and save it
-    const _Component = applySSRData(sanitizeComponent(Component), NUXT.data ? NUXT.data[index] : <span class="branch-1 cbranch-no" title="branch not covered" >null)</span>
+    // Sanitize it and save it<span class="branch-1 cbranch-no" title="branch not covered" ></span>
+    const _Component = applySSRData(sanitizeComponent(Component), NUXT.data ? NUXT.data[index] : null)
     match.components[key] = _Component
     return _Component
   })
 }
+<span class="fstat-no" title="function not covered" ></span>
+function call<span class="cstat-no" title="statement not covered" >Mid</span>dleware (Components, context, layout) {
+  let midd = []<span class="cstat-no" title="statement not covered" ></span>
+  let unknownMiddleware = false
 &nbsp;
-function <span class="fstat-no" title="function not covered" >callMiddleware </span>(Components, context, layout) {
-  let midd = <span class="cstat-no" title="statement not covered" >[]</span>
-  let unknownMiddleware = <span class="cstat-no" title="statement not covered" >false</span>
-&nbsp;
-  // If layout is undefined, only call global middleware
-<span class="cstat-no" title="statement not covered" >  if (typeof layout !== 'undefined') {</span>
-<span class="cstat-no" title="statement not covered" >    midd = [] </span>// Exclude global middleware if layout defined (already called before)
+<span class="cstat-no" title="statement not covered" >  // If layout is undefined, only call global middleware</span>
+  if<span class="cstat-no" title="statement not covered" > (typeof l</span>ayout !== 'undefined') {
+<span class="cstat-no" title="statement not covered" >    midd = [] // Exclude global middlew</span>are if layout defined (already called before)
 <span class="cstat-no" title="statement not covered" >    layout = sanitizeComponent(layout)</span>
-<span class="cstat-no" title="statement not covered" >    if (layout.options.middleware) {</span>
-<span class="cstat-no" title="statement not covered" >      midd = midd.concat(layout.options.middleware)</span>
-    }
-<span class="cstat-no" title="statement not covered" >    Components.forEach(<span class="fstat-no" title="function not covered" >(C</span>omponent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (Component.options.middleware) {</span>
-<span class="cstat-no" title="statement not covered" >        midd = midd.concat(Component.options.middleware)</span>
+    if<span class="cstat-no" title="statement not covered" > (layout.options.middleware) {</span>
+      midd = midd.concat(layout.options.middleware)
+<span class="cstat-no" title="statement not covered" >    }<span class="fstat-no" title="function not covered" ></span></span>
+    Co<span class="cstat-no" title="statement not covered" >mponents.forEach((Component) =&gt; {</span>
+      if<span class="cstat-no" title="statement not covered" > (Component.options.middleware) {</span>
+        midd = midd.concat(Component.options.middleware)
       }
     })
   }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  midd = midd.map(<span class="fstat-no" title="function not covered" >(n</span>ame) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (typeof name === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >      return name</span>
-    }
-<span class="cstat-no" title="statement not covered" >    if (typeof middleware[name] !== 'function') {</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  mi<span class="cstat-no" title="statement not covered" >dd = midd.map((name) =&gt; {</span>
+    if<span class="cstat-no" title="statement not covered" > (typeof nam</span>e === 'function') {
+      return name
+<span class="cstat-no" title="statement not covered" >    }</span>
+    if<span class="cstat-no" title="statement not covered" > (typeof middleware[name]</span> !== 'function') {
 <span class="cstat-no" title="statement not covered" >      unknownMiddleware = true</span>
-<span class="cstat-no" title="statement not covered" >      this.error({ statusCode: 500, message: 'Unknown middleware ' + name })</span>
-    }
-<span class="cstat-no" title="statement not covered" >    return middleware[name]</span>
+      this.error({ statusCode: 500, message: 'Unknown middleware ' + name })
+<span class="cstat-no" title="statement not covered" >    }</span>
+    return middleware[name]
   })
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  if (unknownMiddleware) {</span>
-<span class="cstat-no" title="statement not covered" >    return</span>
-  }
-<span class="cstat-no" title="statement not covered" >  return middlewareSeries(midd, context)</span>
+<span class="cstat-no" title="statement not covered" ></span>
+  if<span class="cstat-no" title="statement not covered" > (unkno</span>wnMiddleware) {
+    return
+<span class="cstat-no" title="statement not covered" >  }</span>
+  return middlewareSeries(midd, context)
 }
-&nbsp;
-async function <span class="fstat-no" title="function not covered" >render </span>(to, from, next) {
-<span class="cstat-no" title="statement not covered" >  if (this._routeChanged === false &amp;&amp; this._paramChanged === false &amp;&amp; this._queryChanged === false) {</span>
-<span class="cstat-no" title="statement not covered" >    return next()</span>
+<span class="fstat-no" title="function not covered" ></span>
+as<span class="cstat-no" title="statement not covered" >ync function render (to, from, next) {</span>
+  if<span class="cstat-no" title="statement not covered" > (this._routeC</span>hanged === false &amp;&amp; this._paramChanged === false &amp;&amp; this._queryChanged === false) {
+    return next()
   }
-  // Handle first render on SPA mode
-<span class="cstat-no" title="statement not covered" >  if (to === from) {</span>
-<span class="cstat-no" title="statement not covered" >    _lastPaths = []</span>
-  } else {
-    const fromMatches = <span class="cstat-no" title="statement not covered" >[]</span>
-<span class="cstat-no" title="statement not covered" >    _lastPaths = getMatchedComponents(from, fromMatches).map(<span class="fstat-no" title="function not covered" >(C</span>omponent, i) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      return compile(from.matched[fromMatches[i]].path)(from.params)</span>
+<span class="cstat-no" title="statement not covered" >  // Handle first render on SPA mode</span>
+  if<span class="cstat-no" title="statement not covered" > (to === from) {</span>
+    _lastPaths = []
+  } else {<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const fromMatches = []<span class="fstat-no" title="function not covered" ></span></span>
+    _l<span class="cstat-no" title="statement not covered" >astPaths = getMatchedComponents(from, fromMatches).map((Compone</span>nt, i) =&gt; {
+      return compile(from.matched[fromMatches[i]].path)(from.params)
     })
   }
 &nbsp;
-  // nextCalled is true when redirected
-  let nextCalled = <span class="cstat-no" title="statement not covered" >false</span>
-  const _next = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>ath) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (from.path === path.path &amp;&amp; this.$loading.finish) {</span>
-<span class="cstat-no" title="statement not covered" >      this.$loading.finish()</span>
+  // nextCalled is <span class="cstat-no" title="statement not covered" >true w</span>hen redirected
+  let nextCalled<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > =</span> false</span>
+  co<span class="cstat-no" title="statement not covered" >nst _next = (path) =&gt; {</span>
+    if<span class="cstat-no" title="statement not covered" > (from.path === path.pa</span>th &amp;&amp; this.$loading.finish) {
+      this.$loading.finish()
     }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    if (from.path !== path.path &amp;&amp; this.$loading.pause) {</span>
-<span class="cstat-no" title="statement not covered" >      this.$loading.pause()</span>
+<span class="cstat-no" title="statement not covered" ></span>
+    if<span class="cstat-no" title="statement not covered" > (from.path !== path.p</span>ath &amp;&amp; this.$loading.pause) {
+      this.$loading.pause()
     }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    if (nextCalled) {</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
+<span class="cstat-no" title="statement not covered" ></span>
+    if<span class="cstat-no" title="statement not covered" > (nextC</span>alled) {
+      return
     }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    nextCalled = true</span>
-<span class="cstat-no" title="statement not covered" >    next(path)</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    nextCalled </span>= true
+    next(path)
   }
 &nbsp;
-  // Update context
-<span class="cstat-no" title="statement not covered" >  await setContext(app, {</span>
+<span class="cstat-no" title="statement not covered" >  // Update context</span>
+  await setContext(app, {
     route: to,
     from,
     next: _next.bind(this)
-  })
+<span class="cstat-no" title="statement not covered" >  })</span>
 <span class="cstat-no" title="statement not covered" >  this._dateLastError = app.nuxt.dateErr</span>
-<span class="cstat-no" title="statement not covered" >  this._hadError = Boolean(app.nuxt.err)</span>
+  this._hadError = Boolean(app.nuxt.err)
 &nbsp;
-  // Get route's matched components
-  const matches = <span class="cstat-no" title="statement not covered" >[]</span>
-  const Components = <span class="cstat-no" title="statement not covered" >getMatchedComponents(to, matches)</span>
+  // Get route's m<span class="cstat-no" title="statement not covered" >atc</span>hed components
+  const matches = []<span class="cstat-no" title="statement not covered" ></span>
+  const Components = getMatchedComponents(to, matches)
 &nbsp;
-  // If no Components matched, generate 404
-<span class="cstat-no" title="statement not covered" >  if (!Components.length) {</span>
-    // Default layout
+<span class="cstat-no" title="statement not covered" >  // If no Components matched, generate 404</span>
+  if (!Components.length) {
+<span class="cstat-no" title="statement not covered" >    // Default layout</span>
 <span class="cstat-no" title="statement not covered" >    await callMiddleware.call(this, Components, app.context)</span>
-<span class="cstat-no" title="statement not covered" >    if (nextCalled) {</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
+    if<span class="cstat-no" title="statement not covered" > (nextC</span>alled) {
+      return
     }
 &nbsp;
-    // Load layout for error page
-    const errorLayout = <span class="cstat-no" title="statement not covered" >(NuxtError.options || NuxtError).layout</span>
-    const layout = <span class="cstat-no" title="statement not covered" >await this.loadLayout(</span>
+    // Load layout for e<span class="cstat-no" title="statement not covered" >rror page</span>
+    const errorLayo<span class="cstat-no" title="statement not covered" >ut = (NuxtError.options || NuxtError).layout</span>
+    const layout = await this.loadLayout(
       typeof errorLayout === 'function'
         ? errorLayout.call(NuxtError, app.context)
         : errorLayout
     )
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    await callMiddleware.call(this, Components, app.context, layout)</span>
-<span class="cstat-no" title="statement not covered" >    if (nextCalled) {</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
+    if<span class="cstat-no" title="statement not covered" > (nextC</span>alled) {
+      return
     }
 &nbsp;
-    // Show error page
-<span class="cstat-no" title="statement not covered" >    app.context.error({ statusCode: 404, message: 'This page could not be found' })</span>
-<span class="cstat-no" title="statement not covered" >    return next()</span>
+<span class="cstat-no" title="statement not covered" >    // Show error page</span>
+<span class="cstat-no" title="statement not covered" >    app.context.er</span>ror({ statusCode: 404, message: 'This page could not be found' })
+    return next()
   }
 &nbsp;
-  // Update ._data and other properties if hot reloaded
-<span class="cstat-no" title="statement not covered" >  Components.forEach(<span class="fstat-no" title="function not covered" >(C</span>omponent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (Component._Ctor &amp;&amp; Component._Ctor.options) {</span>
-<span class="cstat-no" title="statement not covered" >      Component.options.asyncData = Component._Ctor.options.asyncData</span>
-<span class="cstat-no" title="statement not covered" >      Component.options.fetch = Component._Ctor.options.fetch</span>
+<span class="cstat-no" title="statement not covered" >  // Update ._data an<span class="fstat-no" title="function not covered" >d </span>other properties if hot reloaded</span>
+  Co<span class="cstat-no" title="statement not covered" >mponents.forEach((Component) =&gt; {</span>
+    if<span class="cstat-no" title="statement not covered" > (Component._Ctor &amp;&amp; Component._Ctor.options) {</span>
+<span class="cstat-no" title="statement not covered" >      Component.options.asyncData = Component._Ctor.options.as</span>yncData
+      Component.options.fetch = Component._Ctor.options.fetch
     }
   })
 &nbsp;
-  // Apply transitions
-<span class="cstat-no" title="statement not covered" >  this.setTransitions(mapTransitions(Components, to, from))</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    // Call middleware
+<span class="cstat-no" title="statement not covered" >  // Apply transitions</span>
+  this.setTransitions(mapTransitions(Components, to, from))
+<span class="cstat-no" title="statement not covered" ></span>
+  try {
+<span class="cstat-no" title="statement not covered" >    // Call middleware</span>
 <span class="cstat-no" title="statement not covered" >    await callMiddleware.call(this, Components, app.context)</span>
-<span class="cstat-no" title="statement not covered" >    if (nextCalled) {</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
-    }
-<span class="cstat-no" title="statement not covered" >    if (app.context._errored) {</span>
-<span class="cstat-no" title="statement not covered" >      return next()</span>
+    if<span class="cstat-no" title="statement not covered" > (nextC</span>alled) {
+      return
+<span class="cstat-no" title="statement not covered" >    }</span>
+    if<span class="cstat-no" title="statement not covered" > (app.context.</span>_errored) {
+      return next()
     }
 &nbsp;
-    // Set layout
-    let layout = <span class="cstat-no" title="statement not covered" >Components[0].options.layout</span>
-<span class="cstat-no" title="statement not covered" >    if (typeof layout === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >      layout = layout(app.context)</span>
-    }
-<span class="cstat-no" title="statement not covered" >    layout = await this.loadLayout(layout)</span>
+    // Set layout<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    let layout = Components[0].options.layout</span>
+    if<span class="cstat-no" title="statement not covered" > (typeof layout === 'function</span>') {
+      layout = layout(app.context)
+<span class="cstat-no" title="statement not covered" >    }</span>
+    layout = await this.loadLayout(layout)
 &nbsp;
-    // Call middleware for layout
+<span class="cstat-no" title="statement not covered" >    // Call middleware for layout</span>
 <span class="cstat-no" title="statement not covered" >    await callMiddleware.call(this, Components, app.context, layout)</span>
-<span class="cstat-no" title="statement not covered" >    if (nextCalled) {</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
-    }
-<span class="cstat-no" title="statement not covered" >    if (app.context._errored) {</span>
-<span class="cstat-no" title="statement not covered" >      return next()</span>
+    if<span class="cstat-no" title="statement not covered" > (nextC</span>alled) {
+      return
+<span class="cstat-no" title="statement not covered" >    }</span>
+    if<span class="cstat-no" title="statement not covered" > (app.context.</span>_errored) {
+      return next()
     }
 &nbsp;
-    // Call .validate()
-    let isValid = <span class="cstat-no" title="statement not covered" >true</span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      for (const Component of Components) {</span>
-<span class="cstat-no" title="statement not covered" >        if (typeof Component.options.validate !== 'function') {</span>
-<span class="cstat-no" title="statement not covered" >          continue</span>
+    // Call .valid<span class="cstat-no" title="statement not covered" >ate()</span>
+<span class="cstat-no" title="statement not covered" >    let isValid = true</span>
+    tr<span class="cstat-no" title="statement not covered" >y {</span>
+      fo<span class="cstat-no" title="statement not covered" >r (const Component of Components) {</span>
+        if<span class="cstat-no" title="statement not covered" > (typeof </span>Component.options.validate !== 'function') {
+          continue
         }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        isValid = await Component.options.validate(app.context)</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        if (!isValid) {</span>
-<span class="cstat-no" title="statement not covered" >          break</span>
+<span class="cstat-no" title="statement not covered" ></span>
+        isValid = await Component.options.validate(app.context)
+<span class="cstat-no" title="statement not covered" ></span>
+        if<span class="cstat-no" title="statement not covered" > (!isV</span>alid) {
+          break
         }
       }
     } catch (validationError) {
-      // ...If .validate() threw an error
-<span class="cstat-no" title="statement not covered" >      this.error({</span>
+<span class="cstat-no" title="statement not covered" >      // ...If .validate() threw an error</span>
+      this.error({
         statusCode: validationError.statusCode || '500',
         message: validationError.message
-      })
-<span class="cstat-no" title="statement not covered" >      return next()</span>
+<span class="cstat-no" title="statement not covered" >      })</span>
+      return next()
     }
 &nbsp;
-    // ...If .validate() returned false
-<span class="cstat-no" title="statement not covered" >    if (!isValid) {</span>
-<span class="cstat-no" title="statement not covered" >      this.error({ statusCode: 404, message: 'This page could not be found' })</span>
-<span class="cstat-no" title="statement not covered" >      return next()</span>
+<span class="cstat-no" title="statement not covered" >    // ...If .validate() returned false</span>
+    if<span class="cstat-no" title="statement not covered" > (!isValid) {</span>
+<span class="cstat-no" title="statement not covered" >      this.error({ s</span>tatusCode: 404, message: 'This page could not be found' })
+      return next()
     }
 &nbsp;
     let instances
-    // Call asyncData &amp; fetch hooks on components matched by the route.
-<span class="cstat-no" title="statement not covered" >    await Promise.all(Components.map(<span class="fstat-no" title="function not covered" >(C</span>omponent, i) =&gt; {</span>
-      // Check if only children route changed
-<span class="cstat-no" title="statement not covered" >      Component._path = compile(to.matched[matches[i]].path)(to.params)</span>
-<span class="cstat-no" title="statement not covered" >      Component._dataRefresh = false</span>
-      const childPathChanged = <span class="cstat-no" title="statement not covered" >Component._path !== _lastPaths[i]</span>
+<span class="cstat-no" title="statement not covered" >    // Call asyncData &amp; fetch hooks o<span class="fstat-no" title="function not covered" >n </span>components matched by the route.</span>
+    await Promise.all(Components.map((Component, i) =&gt; {
+<span class="cstat-no" title="statement not covered" >      // Check if only children route changed</span>
+<span class="cstat-no" title="statement not covered" >      Component._path = compile(to.ma</span>tched[matches[i]].path)(to.params)
+      Component._dataRefresh = <span class="cstat-no" title="statement not covered" >false</span>
+      const childPathChanged = Component._path !== _lastPaths[i]
       // Refresh component (call asyncData &amp; fetch) when:
       // Route path changed part includes current component
       // Or route param changed part includes current component and watchParam is not `false`
-      // Or route query is changed and watchQuery returns `true`
-<span class="cstat-no" title="statement not covered" >      if (this._routeChanged &amp;&amp; childPathChanged) {</span>
-<span class="cstat-no" title="statement not covered" >        Component._dataRefresh = true</span>
-      } else <span class="cstat-no" title="statement not covered" >if (this._paramChanged &amp;&amp; childPathChanged) {</span>
-        const watchParam = <span class="cstat-no" title="statement not covered" >Component.options.watchParam</span>
-<span class="cstat-no" title="statement not covered" >        Component._dataRefresh = watchParam !== false</span>
-      } else <span class="cstat-no" title="statement not covered" >if (this._queryChanged) {</span>
-        const watchQuery = <span class="cstat-no" title="statement not covered" >Component.options.watchQuery</span>
-<span class="cstat-no" title="statement not covered" >        if (watchQuery === true) {</span>
-<span class="cstat-no" title="statement not covered" >          Component._dataRefresh = true</span>
-        } else <span class="cstat-no" title="statement not covered" >if (Array.isArray(watchQuery)) {</span>
-<span class="cstat-no" title="statement not covered" >          Component._dataRefresh = watchQuery.some(<span class="fstat-no" title="function not covered" >ke</span>y =&gt; <span class="cstat-no" title="statement not covered" >this._diffQuery[key])</span></span>
-        } else <span class="cstat-no" title="statement not covered" >if (typeof watchQuery === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >          if (!instances) {</span>
-<span class="cstat-no" title="statement not covered" >            instances = getMatchedComponentsInstances(to)</span>
-          }
-<span class="cstat-no" title="statement not covered" >          Component._dataRefresh = watchQuery.apply(instances[i], [to.query, from.query])</span>
+<span class="cstat-no" title="statement not covered" >      // Or route query is changed and watchQuery returns `true`</span>
+      if<span class="cstat-no" title="statement not covered" > (this._routeChanged &amp;&amp; childP</span>athChanged) {
+        Compo<span class="cstat-no" title="statement not covered" >nent._dataRefresh = true</span>
+      } else if (this._para<span class="cstat-no" title="statement not covered" >mChanged &amp;&amp; childPathChanged)</span> {
+<span class="cstat-no" title="statement not covered" >        const watchParam = Component.options.watchPara</span>m
+        Compo<span class="cstat-no" title="statement not covered" >nent._dataRefresh = watchParam !== false</span>
+      } else if (this._quer<span class="cstat-no" title="statement not covered" >yChanged) {</span>
+<span class="cstat-no" title="statement not covered" >        const watchQuery = Component.options.watchQuery</span>
+        if<span class="cstat-no" title="statement not covered" > (watchQuery === true) {</span>
+          Compo<span class="cstat-no" title="statement not covered" >nent._dataRefresh = true</span>
+        } <span class="cstat-no" title="statement not covered" >else if (Array.isArray(watchQuery)) {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span></span>
+          Compo<span class="cstat-no" title="statement not covered" >nent._dataRefresh = watchQuery.some(key =&gt; this._diffQuery[key])</span>
+        } <span class="cstat-no" title="statement not covered" >else if (typeof watchQuery === 'function') {</span>
+          if<span class="cstat-no" title="statement not covered" > (!instances) {</span>
+            instances = getMatchedComponentsInstances(to)
+<span class="cstat-no" title="statement not covered" >          }</span>
+          Component._dataRefresh = watchQuery.apply(instances[i], [to.query, from.query])
         }
+<span class="cstat-no" title="statement not covered" >      }</span>
+      if<span class="cstat-no" title="statement not covered" > (!this</span>._hadError &amp;&amp; this._isMounted &amp;&amp; !Component._dataRefresh) {
+        return
       }
-<span class="cstat-no" title="statement not covered" >      if (!this._hadError &amp;&amp; this._isMounted &amp;&amp; !Component._dataRefresh) {</span>
-<span class="cstat-no" title="statement not covered" >        return</span>
-      }
+<span class="cstat-no" title="statement not covered" ></span>
+      const promises = []
 &nbsp;
-      const promises = <span class="cstat-no" title="statement not covered" >[]</span>
-&nbsp;
-      const hasAsyncData = (
-<span class="cstat-no" title="statement not covered" >        Component.options.asyncData &amp;&amp;</span>
+      co<span class="cstat-no" title="statement not covered" >nst hasAsyncData = (</span>
+        Component.options.asyncData &amp;&amp;
         typeof Component.options.asyncData === 'function'
       )
+<span class="cstat-no" title="statement not covered" ></span>
+      const hasFetch = Boolean(Component.options.fetch) &amp;&amp; Component.options.fetch.length
+<span class="cstat-no" title="statement not covered" ></span>
+      const loadingIncrease = (hasAsyncData &amp;&amp; hasFetch) ? 30 : 45
 &nbsp;
-      const hasFetch = <span class="cstat-no" title="statement not covered" >Boolean(Component.options.fetch) &amp;&amp; Component.options.fetch.length</span>
-&nbsp;
-      const loadingIncrease = <span class="cstat-no" title="statement not covered" >(hasAsyncData &amp;&amp; hasFetch) ? 30 : 45</span>
-&nbsp;
-      // Call asyncData(context)
-<span class="cstat-no" title="statement not covered" >      if (hasAsyncData) {</span>
-        const promise = <span class="cstat-no" title="statement not covered" >promisify(Component.options.asyncData, app.context)</span>
-          .then(<span class="fstat-no" title="function not covered" >(a</span>syncDataResult) =&gt; {
-<span class="cstat-no" title="statement not covered" >            applyAsyncData(Component, asyncDataResult)</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >            if (this.$loading.increase) {</span>
-<span class="cstat-no" title="statement not covered" >              this.$loading.increase(loadingIncrease)</span>
+<span class="cstat-no" title="statement not covered" >      // Call asyncData(context)</span>
+      if (hasAsyncData) <span class="cstat-no" title="statement not covered" >{</span>
+        const pr<span class="fstat-no" title="function not covered" >om</span>ise = promisify(Component.options.asyncData, app.context)
+          .t<span class="cstat-no" title="statement not covered" >hen((asyncDataResult) =&gt; {</span>
+            applyAsyncData(Component, asyncDataResult)
+<span class="cstat-no" title="statement not covered" ></span>
+            if<span class="cstat-no" title="statement not covered" > (this.$loading.increase) {</span>
+              this.$loading.increase(loadingIncrease)
             }
-          })
-<span class="cstat-no" title="statement not covered" >        promises.push(promise)</span>
+<span class="cstat-no" title="statement not covered" >          })</span>
+        promises.push(promise)
       }
 &nbsp;
-      // Check disabled page loading
-<span class="cstat-no" title="statement not covered" >      this.$loading.manual = Component.options.loading === false</span>
+<span class="cstat-no" title="statement not covered" >      // Check disabled page loading</span>
+      this.$loading.manual = Component.options.loading === false
 &nbsp;
-      // Call fetch(context)
-<span class="cstat-no" title="statement not covered" >      if (hasFetch) {</span>
-        let p = <span class="cstat-no" title="statement not covered" >Component.options.fetch(app.context)</span>
-<span class="cstat-no" title="statement not covered" >        if (!p || (!(p instanceof Promise) &amp;&amp; (typeof p.then !== 'function'))) {</span>
-<span class="cstat-no" title="statement not covered" >          p = Promise.resolve(p)</span>
-        }
-<span class="cstat-no" title="statement not covered" >        p.then(<span class="fstat-no" title="function not covered" >(f</span>etchResult) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >          if (this.$loading.increase) {</span>
-<span class="cstat-no" title="statement not covered" >            this.$loading.increase(loadingIncrease)</span>
+<span class="cstat-no" title="statement not covered" >      // Call fetch(context)</span>
+      if (hasFet<span class="cstat-no" title="statement not covered" >ch) {</span>
+<span class="cstat-no" title="statement not covered" >        let p = Component.options.fetch(app.context)</span>
+        if<span class="cstat-no" title="statement not covered" > (!p || (!(p instanceof</span> Promise) &amp;&amp; (typeof p.then !== 'function'))) {
+          p = Promise.resolve(p)
+<span class="cstat-no" title="statement not covered" >        }<span class="fstat-no" title="function not covered" ></span></span>
+        p.<span class="cstat-no" title="statement not covered" >then((fetchResult) =&gt; {</span>
+          if<span class="cstat-no" title="statement not covered" > (this.$loading.increase) {</span>
+            this.$loading.increase(loadingIncrease)
           }
-        })
-<span class="cstat-no" title="statement not covered" >        promises.push(p)</span>
+<span class="cstat-no" title="statement not covered" >        })</span>
+        promises.push(p)
       }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >      return Promise.all(promises)</span>
+<span class="cstat-no" title="statement not covered" ></span>
+      return Promise.all(promises)
     }))
 &nbsp;
-    // If not redirected
-<span class="cstat-no" title="statement not covered" >    if (!nextCalled) {</span>
-<span class="cstat-no" title="statement not covered" >      if (this.$loading.finish &amp;&amp; !this.$loading.manual) {</span>
-<span class="cstat-no" title="statement not covered" >        this.$loading.finish()</span>
+<span class="cstat-no" title="statement not covered" >    // If not redirected</span>
+    if<span class="cstat-no" title="statement not covered" > (!nextCalled) {</span>
+      if<span class="cstat-no" title="statement not covered" > (this.$loading.finish </span>&amp;&amp; !this.$loading.manual) {
+        this.$loading.finish()
       }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >      next()</span>
+<span class="cstat-no" title="statement not covered" ></span>
+      next()
     }
-  } catch (err) {
-    const error = <span class="cstat-no" title="statement not covered" >err || {}</span>
-<span class="cstat-no" title="statement not covered" >    if (error.message === 'ERR_REDIRECT') {</span>
-<span class="cstat-no" title="statement not covered" >      return this.$nuxt.$emit('routeChanged', to, from, error)</span>
-    }
-<span class="cstat-no" title="statement not covered" >    _lastPaths = []</span>
+  } catch (err) {<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const error = err || {}</span>
+    if<span class="cstat-no" title="statement not covered" > (error.message === 'ERR_REDIRECT') {</span>
+      return this.$nuxt.$emit('routeChanged', to, from, error)
+<span class="cstat-no" title="statement not covered" >    }</span>
+    _lastPaths = []
+<span class="cstat-no" title="statement not covered" ></span>
+    globalHandleError(error)
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    globalHandleError(error)</span>
-&nbsp;
-    // Load error layout
-    let layout = <span class="cstat-no" title="statement not covered" >(NuxtError.options || NuxtError).layout</span>
-<span class="cstat-no" title="statement not covered" >    if (typeof layout === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >      layout = layout(app.context)</span>
-    }
-<span class="cstat-no" title="statement not covered" >    await this.loadLayout(layout)</span>
-&nbsp;
+    // Load error<span class="cstat-no" title="statement not covered" > layout</span>
+<span class="cstat-no" title="statement not covered" >    let layout = (NuxtError.options || NuxtError).layout</span>
+    if<span class="cstat-no" title="statement not covered" > (typeof layout === 'function</span>') {
+      layout = layout(app.context)
+<span class="cstat-no" title="statement not covered" >    }</span>
+    await this.loadLayout(layout)
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    this.error(error)</span>
-<span class="cstat-no" title="statement not covered" >    this.$nuxt.$emit('routeChanged', to, from, error)</span>
-<span class="cstat-no" title="statement not covered" >    next()</span>
+<span class="cstat-no" title="statement not covered" >    this.$n</span>uxt.$emit('routeChanged', to, from, error)
+    next()
   }
 }
 &nbsp;
-// Fix components format in matched, it's due to code-splitting of vue-router
-function <span class="fstat-no" title="function not covered" >normalizeComponents </span>(to, ___) {
-<span class="cstat-no" title="statement not covered" >  flatMapComponents(to, <span class="fstat-no" title="function not covered" >(C</span>omponent, _, match, key) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (typeof Component === 'object' &amp;&amp; !Component.options) {</span>
-      // Updated via vue-router resolveAsyncComponents()
-<span class="cstat-no" title="statement not covered" >      Component = Vue.extend(Component)</span>
+// Fix co<span class="fstat-no" title="function not covered" >mponents format in m</span>atched, it's due to code-splitting of vue-router
+fu<span class="cstat-no" title="statement not covered" >nction normalizeCompon<span class="fstat-no" title="function not covered" >en</span>ts (to, ___) {</span>
+  fl<span class="cstat-no" title="statement not covered" >atMapComponents(to, (Component, _, match, key) =&gt; {</span>
+    if (typeof Component === 'object' &amp;&amp; !Component.options) {
+<span class="cstat-no" title="statement not covered" >      // Updated via vue-router resolveA</span>syncComponents()
+<span class="cstat-no" title="statement not covered" >      Component = Vue.extend(Compo</span>nent)
 <span class="cstat-no" title="statement not covered" >      Component._Ctor = Component</span>
-<span class="cstat-no" title="statement not covered" >      match.components[key] = Component</span>
-    }
-<span class="cstat-no" title="statement not covered" >    return Component</span>
+      match.components[key] = Component
+<span class="cstat-no" title="statement not covered" >    }</span>
+    return Component
   })
 }
-&nbsp;
-function <span class="fstat-no" title="function not covered" >showNextPage </span>(to) {
-  // Hide error component if no error
-<span class="cstat-no" title="statement not covered" >  if (this._hadError &amp;&amp; this._dateLastError === this.$options.nuxt.dateErr) {</span>
-<span class="cstat-no" title="statement not covered" >    this.error()</span>
+<span class="fstat-no" title="function not covered" ></span>
+function showNextPage (to) {
+<span class="cstat-no" title="statement not covered" >  // Hide error component if no error</span>
+  if<span class="cstat-no" title="statement not covered" > (this._hadEr</span>ror &amp;&amp; this._dateLastError === this.$options.nuxt.dateErr) {
+    this.error()
   }
 &nbsp;
-  // Set layout
-  let layout = <span class="cstat-no" title="statement not covered" >this.$options.nuxt.err</span>
+  // Set layout<span class="cstat-no" title="statement not covered" ></span>
+  let layout = this.$options.nuxt.err
     ? (NuxtError.options || NuxtError).layout
     : to.matched[0].components.default.options.layout
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  if (typeof layout === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >    layout = layout(app.context)</span>
-  }
-<span class="cstat-no" title="statement not covered" >  this.setLayout(layout)</span>
+<span class="cstat-no" title="statement not covered" ></span>
+  if<span class="cstat-no" title="statement not covered" > (typeof layout === 'function</span>') {
+    layout = layout(app.context)
+<span class="cstat-no" title="statement not covered" >  }</span>
+  this.setLayout(layout)
 }
 &nbsp;
 // When navigating on a different route but the same component is used, Vue.js
-// Will not update the instance data, so we have to update $data ourselves
-function <span class="fstat-no" title="function not covered" >fixPrepatch </span>(to, ___) {
-<span class="cstat-no" title="statement not covered" >  if (this._routeChanged === false &amp;&amp; this._paramChanged === false &amp;&amp; this._queryChanged === false) {</span>
-<span class="cstat-no" title="statement not covered" >    return</span>
+// Will n<span class="fstat-no" title="function not covered" >ot update th</span>e instance data, so we have to update $data ourselves
+fu<span class="cstat-no" title="statement not covered" >nction fixPrepatch (to, ___) {</span>
+  if<span class="cstat-no" title="statement not covered" > (this.</span>_routeChanged === false &amp;&amp; this._paramChanged === false &amp;&amp; this._queryChanged === false) {
+    return
   }
-&nbsp;
-  const instances = <span class="cstat-no" title="statement not covered" >getMatchedComponentsInstances(to)</span>
-  const Components = <span class="cstat-no" title="statement not covered" >getMatchedComponents(to)</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  Vue.nextTick(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    instances.forEach(<span class="fstat-no" title="function not covered" >(i</span>nstance, i) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (!instance || instance._isDestroyed) {</span>
-<span class="cstat-no" title="statement not covered" >        return</span>
+<span class="cstat-no" title="statement not covered" ></span>
+  const instances = g<span class="cstat-no" title="statement not covered" >etMatchedComponentsInstan</span>ces(to)
+  const Components = getMatchedComponents(to)
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  Vu<span class="cstat-no" title="statement not covered" >e.nextTick(() =&gt; {<span class="fstat-no" title="function not covered" ></span></span>
+    in<span class="cstat-no" title="statement not covered" >stances.forEach((instance, i) =&gt; {</span>
+      if<span class="cstat-no" title="statement not covered" > (!inst</span>ance || instance._isDestroyed) {
+        return
       }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >      if (</span>
+<span class="cstat-no" title="statement not covered" ></span>
+      if (
         instance.constructor._dataRefresh &amp;&amp;
         Components[i] === instance.constructor &amp;&amp;
         instance.$vnode.data.keepAlive !== true &amp;&amp;
         typeof instance.constructor.options.data === 'function'
-      ) {
-        const newData = <span class="cstat-no" title="statement not covered" >instance.constructor.options.data.call(instance)</span>
-<span class="cstat-no" title="statement not covered" >        for (const key in newData) {</span>
-<span class="cstat-no" title="statement not covered" >          Vue.set(instance.$data, key, newData[key])</span>
+      ) {<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >        const newData = instance.constructor.options.data.call(instance)</span>
+        fo<span class="cstat-no" title="statement not covered" >r (const key in newData) {</span>
+          Vue.set(instance.$data, key, newData[key])
         }
 &nbsp;
-        // Ensure to trigger scroll event after calling scrollBehavior
-<span class="cstat-no" title="statement not covered" >        window.$nuxt.$nextTick(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >          window.$nuxt.$emit('triggerScroll')</span>
+<span class="cstat-no" title="statement not covered" >        // Ensure to trigger sc<span class="fstat-no" title="function not covered" >ro</span>ll event after calling scrollBehavior</span>
+        wi<span class="cstat-no" title="statement not covered" >ndow.$nuxt.$nextTick(() =&gt; {</span>
+          window.$nuxt.$emit('triggerScroll')
         })
       }
-    })
-<span class="cstat-no" title="statement not covered" >    showNextPage.call(this, to)</span>
+<span class="cstat-no" title="statement not covered" >    })</span>
+    showNextPage.call(this, to)
 &nbsp;
-    // Hot reloading
-<span class="cstat-no" title="statement not covered" >    setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >hotReloadAPI(this),</span> 100)</span>
+<span class="cstat-no" title="statement not covered" >    // Hot relo<span class="fstat-no" title="function not covered" >ad</span>ing<span class="cstat-no" title="statement not covered" ></span></span>
+    setTimeout(() =&gt; hotReloadAPI(this), 100)
   })
 }
 &nbsp;
-function nuxtReady (_app) {
-  window.onNuxtReadyCbs.forEach(<span class="fstat-no" title="function not covered" >(c</span>b) =&gt; {
-<span class="cstat-no" title="statement not covered" >    if (typeof cb === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >      cb(_app)</span>
+function nuxtReady (_app) {<span class="fstat-no" title="function not covered" ></span>
+  wi<span class="cstat-no" title="statement not covered" >ndow.onNuxtReadyCbs.forEach((cb) =&gt; {</span>
+    if<span class="cstat-no" title="statement not covered" > (typeof </span>cb === 'function') {
+      cb(_app)
     }
   })
-  // Special JSDOM
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof window._onNuxtLoaded === 'function') {
-<span class="cstat-no" title="statement not covered" >    window._onNuxtLoaded(_app)</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>// Special JSDOM
+  if<span class="cstat-no" title="statement not covered" > (typeof window._onNuxtLoad</span>ed === 'function') {
+    window._onNuxtLoaded(_app)
   }
-  // Add router hooks
-  router.afterEach(<span class="fstat-no" title="function not covered" >(t</span>o, from) =&gt; {
-    // Wait for fixPrepatch + $data updates
-<span class="cstat-no" title="statement not covered" >    Vue.nextTick(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >_app.$nuxt.$emit('routeChanged', to, from))</span></span>
+  // Add router hoo<span class="fstat-no" title="function not covered" >ks</span>
+  router.afterEach((to, from) =&gt; {
+<span class="cstat-no" title="statement not covered" >    // Wait for f<span class="fstat-no" title="function not covered" >ix</span>Prep<span class="cstat-no" title="statement not covered" >atch + $data updates</span></span>
+    Vue.nextTick(() =&gt; _app.$nuxt.$emit('routeChanged', to, from))
   })
 }
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+const noopData = (<span class="fstat-no" title="function not covered" >) </span>=&gt; { return {} }
+const noopFetch = () =&gt; {}
 &nbsp;
-const noopData = <span class="fstat-no" title="function not covered" >()</span> =&gt; { <span class="cstat-no" title="statement not covered" >return {} </span>}
-const noopFetch = <span class="fstat-no" title="function not covered" >()</span> =&gt; {}
-&nbsp;
-// Special hot reload with asyncData(context)
-function getNuxtChildComponents ($parent, $components = <span class="branch-0 cbranch-no" title="branch not covered" >[])</span> {
-  $parent.$children.forEach(($child) =&gt; {
-    if ($child.$vnode &amp;&amp; $child.$vnode.data.nuxtChild &amp;&amp; !$components.find(<span class="fstat-no" title="function not covered" >c </span>=&gt;(<span class="cstat-no" title="statement not covered" >c.$options.__file === $child.$options.__file)</span>)) {
+// Special hot reload with asyncData(context)<span class="branch-0 cbranch-no" title="branch not covered" ></span>
+function getNuxtChildComponents ($parent, $components = []) {
+  $parent.$children.forEach(($child) =&gt; {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    if ($child.$vnode &amp;&amp; $child.$vnode.data.nuxtChild &amp;&amp; !$components.find(c =&gt;(c.$options.__file === $child.$options.__file))) {
       $components.push($child)
     }
     if ($child.$children &amp;&amp; $child.$children.length) {
@@ -2210,96 +2215,96 @@ function getNuxtChildComponents ($parent, $components = <span class="branch-0 cb
   return $components
 }
 &nbsp;
-function hotReloadAPI(_app) {
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (!module.hot) <span class="cstat-no" title="statement not covered" >return</span>
+fu<span class="missing-if-branch" title="if path not taken" >I</span>nction hotReloadA<span class="cstat-no" title="statement not covered" >PI(_app</span>) {
+  if (!module.hot) return
 &nbsp;
   let $components = getNuxtChildComponents(_app.$nuxt, [])
 &nbsp;
   $components.forEach(addHotReload.bind(_app))
 }
 &nbsp;
-function addHotReload ($component, depth) {
-  <span class="missing-if-branch" title="if path not taken" >I</span>if ($component.$vnode.data._hasHotReload) <span class="cstat-no" title="statement not covered" >return</span>
+fu<span class="missing-if-branch" title="if path not taken" >I</span>nction addHotReload ($component, depth) {<span class="cstat-no" title="statement not covered" ></span>
+  if ($component.$vnode.data._hasHotReload) return
   $component.$vnode.data._hasHotReload = true
 &nbsp;
   var _forceUpdate = $component.$forceUpdate.bind($component.$parent)
-&nbsp;
-  $component.$vnode.context.$forceUpdate = <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {
-    let Components = <span class="cstat-no" title="statement not covered" >getMatchedComponents(router.currentRoute)</span>
-    let Component = <span class="cstat-no" title="statement not covered" >Components[depth]</span>
-<span class="cstat-no" title="statement not covered" >    if (!Component) {</span>
-<span class="cstat-no" title="statement not covered" >      return _forceUpdate()</span>
-    }
-<span class="cstat-no" title="statement not covered" >    if (typeof Component === 'object' &amp;&amp; !Component.options) {</span>
-      // Updated via vue-router resolveAsyncComponents()
-<span class="cstat-no" title="statement not covered" >      Component = Vue.extend(Component)</span>
-<span class="cstat-no" title="statement not covered" >      Component._Ctor = Component</span>
-    }
-<span class="cstat-no" title="statement not covered" >    this.error()</span>
-    let promises = <span class="cstat-no" title="statement not covered" >[]</span>
-    const next = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >fu</span>nction (path) {</span>
-<span class="cstat-no" title="statement not covered" >      this.$loading.finish &amp;&amp; this.$loading.finish()</span>
-<span class="cstat-no" title="statement not covered" >      router.push(path)</span>
-    }
-<span class="cstat-no" title="statement not covered" >    await setContext(app, {</span>
+<span class="fstat-no" title="function not covered" ></span>
+  $component.$vnode.c<span class="cstat-no" title="statement not covered" >ontext.$forceUpdate = async () =&gt; {</span>
+    let Components =<span class="cstat-no" title="statement not covered" > getMatchedCompone</span>nts(router.currentRoute)
+<span class="cstat-no" title="statement not covered" >    let Component = Components[depth]</span>
+    if<span class="cstat-no" title="statement not covered" > (!Component) {</span>
+      return _forceUpdate()
+<span class="cstat-no" title="statement not covered" >    }</span>
+    if (typeof Component === 'object' &amp;&amp; !Component.options) {
+<span class="cstat-no" title="statement not covered" >      // Updated via vue-router resolveA</span>syncComponents()
+<span class="cstat-no" title="statement not covered" >      Component = Vue.extend(Compo</span>nent)
+      Component._Ctor = Component
+<span class="cstat-no" title="statement not covered" >    }</span>
+    this.error()<span class="cstat-no" title="statement not covered" ></span>
+    let promises <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >= </span>[]</span>
+    co<span class="cstat-no" title="statement not covered" >nst next = function (path) {</span>
+<span class="cstat-no" title="statement not covered" >      this.$loading.fini</span>sh &amp;&amp; this.$loading.finish()
+      router.push(path)
+<span class="cstat-no" title="statement not covered" >    }</span>
+    await setContext(app, {
       route: router.currentRoute,
       isHMR: true,
       next: next.bind(this)
-    })
-    const context = <span class="cstat-no" title="statement not covered" >app.context</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    if (this.$loading.start &amp;&amp; !this.$loading.manual) {</span>
-<span class="cstat-no" title="statement not covered" >      this.$loading.start()</span>
+    })<span class="cstat-no" title="statement not covered" ></span>
+    const context = app.context
+<span class="cstat-no" title="statement not covered" ></span>
+    if<span class="cstat-no" title="statement not covered" > (this.$loading.start </span>&amp;&amp; !this.$loading.manual) {
+      this.$loading.start()
     }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    callMiddleware.call(this, Components, context)</span>
-    .then(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-      // If layout changed
-<span class="cstat-no" title="statement not covered" >      if (depth !== 0) {</span>
-<span class="cstat-no" title="statement not covered" >        return</span>
+<span class="cstat-no" title="statement not covered" ></span>
+    callMi<span class="fstat-no" title="function not covered" >dd</span>leware.call(this, Components, context)
+    .then(() =&gt; {
+<span class="cstat-no" title="statement not covered" >      // If layout changed</span>
+      if<span class="cstat-no" title="statement not covered" > (depth</span> !== 0) {
+        return
       }
-&nbsp;
-      let layout = <span class="cstat-no" title="statement not covered" >Component.options.layout || 'default'</span>
-<span class="cstat-no" title="statement not covered" >      if (typeof layout === 'function') {</span>
-<span class="cstat-no" title="statement not covered" >        layout = layout(context)</span>
-      }
-<span class="cstat-no" title="statement not covered" >      if (this.layoutName === layout) {</span>
-<span class="cstat-no" title="statement not covered" >        return</span>
-      }
-      let promise = <span class="cstat-no" title="statement not covered" >this.loadLayout(layout)</span>
-<span class="cstat-no" title="statement not covered" >      promise.then(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        this.setLayout(layout)</span>
-<span class="cstat-no" title="statement not covered" >        Vue.nextTick(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >hotReloadAPI(this))</span></span>
-      })
-<span class="cstat-no" title="statement not covered" >      return promise</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >      let layout = Component.options.layout || 'default'</span>
+      if<span class="cstat-no" title="statement not covered" > (typeof layout === 'func</span>tion') {
+        layout = layout(context)
+<span class="cstat-no" title="statement not covered" >      }</span>
+      if<span class="cstat-no" title="statement not covered" > (this.</span>layoutName === layout) {
+        return
+      }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >      let promise =<span class="fstat-no" title="function not covered" > t</span>his.loadLayout(layout)</span>
+      pr<span class="cstat-no" title="statement not covered" >omise.then(() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        this.setLayou<span class="fstat-no" title="function not covered" >t(</span>layo<span class="cstat-no" title="statement not covered" >ut)</span></span>
+        Vue.nextTick(() =&gt; hotReloadAPI(this))
+<span class="cstat-no" title="statement not covered" >      })</span>
+      return promise
     })
-&nbsp;
-    .then(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >      return callMiddleware.call(this, Components, context, this.layout)</span>
+<span class="fstat-no" title="function not covered" ></span>
+    .t<span class="cstat-no" title="statement not covered" >hen(() =&gt; {</span>
+      return callMiddleware.call(this, Components, context, this.layout)
     })
-&nbsp;
-    .then(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-      // Call asyncData(context)
-      let pAsyncData = <span class="cstat-no" title="statement not covered" >promisify(Component.options.asyncData || noopData, context)</span>
-<span class="cstat-no" title="statement not covered" >      pAsyncData.then(<span class="fstat-no" title="function not covered" >(a</span>syncDataResult) =&gt; {</span>
+<span class="fstat-no" title="function not covered" ></span>
+    .then(() =&gt; {
+      // Call asyncData<span class="cstat-no" title="statement not covered" >(context)</span>
+<span class="cstat-no" title="statement not covered" >      let pAsyncData =<span class="fstat-no" title="function not covered" > p</span>romisify(Component.options.asyncData || noopData, context)</span>
+      pA<span class="cstat-no" title="statement not covered" >syncData.then((asyncDataResult) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        applyAsyncData(Component, asyncDataResult)</span>
-<span class="cstat-no" title="statement not covered" >        this.$loading.increase &amp;&amp; this.$loading.increase(30)</span>
-      })
-<span class="cstat-no" title="statement not covered" >      promises.push(pAsyncData)</span>
+        this.$loading.increase &amp;&amp; this.$loading.increase(30)
+<span class="cstat-no" title="statement not covered" >      })</span>
+      promises.push(pAsyncData)
 &nbsp;
-      // Call fetch()
-<span class="cstat-no" title="statement not covered" >      Component.options.fetch = Component.options.fetch || noopFetch</span>
-      let pFetch = <span class="cstat-no" title="statement not covered" >Component.options.fetch.length &amp;&amp; Component.options.fetch(context)</span>
-<span class="cstat-no" title="statement not covered" >      if (!pFetch || (!(pFetch instanceof Promise) &amp;&amp; (typeof pFetch.then !== 'function'))) { <span class="cstat-no" title="statement not covered" >pFetch = Promise.resolve(pFetch) </span>}</span>
-<span class="cstat-no" title="statement not covered" >      pFetch.then(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this.$loading.increase &amp;&amp; this.$loading.increase(30))</span></span>
-<span class="cstat-no" title="statement not covered" >      promises.push(pFetch)</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >      return Promise.all(promises)</span>
-    })
-    .then(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >      this.$loading.finish &amp;&amp; this.$loading.finish()</span>
-<span class="cstat-no" title="statement not covered" >      _forceUpdate()</span>
-<span class="cstat-no" title="statement not covered" >      setTimeout(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >hotReloadAPI(this),</span> 100)</span>
+<span class="cstat-no" title="statement not covered" >      // Call fetch()</span>
+      Component.opt<span class="cstat-no" title="statement not covered" >ions.fetch = Component.options.fetch || noopFetch</span>
+<span class="cstat-no" title="statement not covered" >      let pFetch = Component.options.fetch.length &amp;&amp; Component.options.fetch(context)<span class="cstat-no" title="statement not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" >      if (!pFetch <span class="fstat-no" title="function not covered" >||</span> (!(<span class="cstat-no" title="statement not covered" >pFetch instanceof Promise) &amp;&amp; (typeof pFetch.then !==</span> </span>'function'))) { pFetch = Promise.resolve(pFetch) }
+<span class="cstat-no" title="statement not covered" >      pFetch.then(() =&gt; this</span>.$loading.increase &amp;&amp; this.$loading.increase(30))
+      promises.push(pFetch)
+<span class="cstat-no" title="statement not covered" ></span>
+      return Promise.all(promises)
+    })<span class="fstat-no" title="function not covered" ></span>
+    .t<span class="cstat-no" title="statement not covered" >hen(() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      this.$loading.f</span>inish &amp;&amp; this.$loading.finish()
+<span class="cstat-no" title="statement not covered" >      _forceUpdat<span class="fstat-no" title="function not covered" >e(</span>)<span class="cstat-no" title="statement not covered" ></span></span>
+      setTimeout(() =&gt; hotReloadAPI(this), 100)
     })
   }
 }
@@ -2308,12 +2313,13 @@ async function mountApp (__app) {
   // Set global variables
   app = __app.app
   router = __app.router
+  store = __app.store
 &nbsp;
   // Create Vue instance
   const _app = new Vue(app)
-&nbsp;
+<span class="branch-1 cbranch-no" title="branch not covered" ></span>
   // Load layout
-  const layout = NUXT.layout || <span class="branch-1 cbranch-no" title="branch not covered" >'default'</span>
+  const layout = NUXT.layout || 'default'
   await _app.loadLayout(layout)
   _app.setLayout(layout)
 &nbsp;
@@ -2338,55 +2344,55 @@ async function mountApp (__app) {
   // Resolve route components
   const Components = await Promise.all(resolveComponents(router))
 &nbsp;
-  // Enable transitions
+  <span class="missing-if-branch" title="else path not taken" >E</span>// Enable transitions
   _app.setTransitions = _app.$options.nuxt.setTransitions.bind(_app)
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (Components.length) {
+  if (Components.length) {
     _app.setTransitions(mapTransitions(Components, router.currentRoute))
     _lastPaths = router.currentRoute.matched.map(route =&gt; compile(route.path)(router.currentRoute.params))
   }
 &nbsp;
-  // Initialize error handler
-  _app.$loading = {} // To avoid error while _app.$nuxt does not exist
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (NUXT.error) {
-<span class="cstat-no" title="statement not covered" >    _app.error(NUXT.error)</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>// Initialize error handler
+  _a<span class="cstat-no" title="statement not covered" >pp.$loading = {} // To </span>avoid error while _app.$nuxt does not exist
+  if (NUXT.error) {
+    _app.error(NUXT.error)
   }
 &nbsp;
   // Add beforeEach router hooks
   router.beforeEach(loadAsyncComponents.bind(_app))
   router.beforeEach(render.bind(_app))
-&nbsp;
+<span class="missing-if-branch" title="else path not taken" >E</span>
   // If page already is server rendered and it was done on the same route path as client side render
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (NUXT.serverRendered &amp;&amp; NUXT.routePath === _app.context.route.path) {
+  if (NUXT.serverRendered &amp;&amp; NUXT.routePath === _app.context.route.path) {
     mount()
     return
   }
-&nbsp;
-  // First render on client-side
-  const clientFirstMount = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    normalizeComponents(router.currentRoute, router.currentRoute)</span>
-<span class="cstat-no" title="statement not covered" >    showNextPage.call(_app, router.currentRoute)</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  //<span class="cstat-no" title="statement not covered" > First render on client-side</span>
+  co<span class="cstat-no" title="statement not covered" >nst clientFirstMount = () =&gt; {</span>
+    normalizeComponents(router.currentRoute, router.currentRoute)
+<span class="cstat-no" title="statement not covered" >    showNext</span>Page.call(_app, router.currentRoute)
     // Don't call fixPrepatch.call(_app, router.currentRoute, router.currentRoute) since it's first render
-<span class="cstat-no" title="statement not covered" >    mount()</span>
-  }
+    mount()
+<span class="cstat-no" title="statement not covered" >  }<span class="fstat-no" title="function not covered" ></span></span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  render.call(_app, router.currentRoute, router.currentRoute, <span class="fstat-no" title="function not covered" >(p</span>ath) =&gt; {</span>
-    // If not redirected
-<span class="cstat-no" title="statement not covered" >    if (!path) {</span>
-<span class="cstat-no" title="statement not covered" >      clientFirstMount()</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
+  re<span class="cstat-no" title="statement not covered" >nder.call(_app, router.currentRoute, router.currentRoute, (path) =&gt; {</span>
+    //<span class="cstat-no" title="statement not covered" > If not redirected</span>
+    if<span class="cstat-no" title="statement not covered" > (!path</span>) {
+      clientFirstMount()
+      return
     }
 &nbsp;
-    // Add a one-time afterEach hook to
-    // mount the app wait for redirect and route gets resolved
-    const unregisterHook = <span class="cstat-no" title="statement not covered" >router.afterEach(<span class="fstat-no" title="function not covered" >(t</span>o, from) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      unregisterHook()</span>
-<span class="cstat-no" title="statement not covered" >      clientFirstMount()</span>
+    // Add a one-time after<span class="cstat-no" title="statement not covered" >Each hook to<span class="fstat-no" title="function not covered" ></span></span>
+    //<span class="cstat-no" title="statement not covered" > mount the app wa</span>it for redirect and route gets resolved
+    co<span class="cstat-no" title="statement not covered" >nst unregisterHook </span>= router.afterEach((to, from) =&gt; {
+      unregisterHook()
+      clientFirstMount()
     })
-&nbsp;
-    // Push the path and let route to be resolved
-<span class="cstat-no" title="statement not covered" >    router.push(path, undefined, <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      if (err) {</span>
-<span class="cstat-no" title="statement not covered" >        errorHandler(err)</span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    //<span class="cstat-no" title="statement not covered" > Push the path and let route to be resolved</span>
+    rout<span class="cstat-no" title="statement not covered" >er.push(path, unde</span>fined, (err) =&gt; {
+      if (err) {
+        errorHandler(err)
       }
     })
   })
@@ -2398,7 +2404,7 @@ async function mountApp (__app) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Jun 05 2020 05:08:42 GMT+0000 (Coordinated Universal Time)
+                at Sat Jun 27 2020 06:26:31 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

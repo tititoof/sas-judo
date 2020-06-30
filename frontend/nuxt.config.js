@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+require('dotenv').config()
 
 export default {
   mode: 'universal',
@@ -30,7 +31,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~/plugins/axios.js', '~/plugins/axios-accessor.ts'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -39,11 +40,15 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
+    // AUth module
+    '@nuxtjs/auth',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
+    // Leaflet
+    'nuxt-leaflet',
     // Vue mq
     ['nuxt-mq']
   ],
@@ -51,7 +56,19 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: process.env.API_URL,
+    debug: false,
+    proxyHeaders: true,
+    headers: {
+      common: {
+        client: '',
+        'access-token': '',
+        uid: '',
+        'token-type': ''
+      }
+    }
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -88,6 +105,38 @@ export default {
       sm: 450,
       md: 1250,
       lg: Infinity
+    }
+  },
+  auth: {
+    cookie: false,
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/api/auth/sign_in',
+            method: 'post',
+            propertyName: false
+          },
+          logout: { url: '/api/auth/sign_out', method: 'post' },
+          user: {
+            url: '/api/auth/validate_token',
+            method: 'get',
+            propertyName: 'data'
+          }
+        },
+        tokenRequired: true,
+        tokenType: 'bearer',
+        autoFetchUser: false
+      }
+    },
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: '/login',
+      home: '/admin'
+    },
+    localStorage: {
+      prefix: 'sas_judo_auth.'
     }
   },
   /*

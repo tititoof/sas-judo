@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1591333722520" clover="3.2.0">
-  <project timestamp="1591333722521" name="All files">
+<coverage generated="1593239191651" clover="3.2.0">
+  <project timestamp="1593239191652" name="All files">
     <metrics statements="1042" coveredstatements="358" conditionals="844" coveredconditionals="172" methods="223" coveredmethods="75" elements="2109" coveredelements="605" complexity="0" loc="1042" ncloc="1042" packages="4" files="16" classes="16"/>
     <package name=".nuxt">
       <metrics statements="890" coveredstatements="303" conditionals="741" coveredconditionals="141" methods="185" coveredmethods="66"/>

@@ -238,7 +238,12 @@
 <a name='L179'></a><a href='#L179'>179</a>
 <a name='L180'></a><a href='#L180'>180</a>
 <a name='L181'></a><a href='#L181'>181</a>
-<a name='L182'></a><a href='#L182'>182</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -419,55 +424,58 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Axios from 'axios'
 import defu from 'defu'
 &nbsp;
-const $nuxt = typeof window !== 'undefined' &amp;&amp; window['$nuxt']
-&nbsp;
 // Axios.prototype cannot be modified
 const axiosExtra = {
-<span class="fstat-no" title="function not covered" >  se</span>tBaseURL (baseURL) {
-<span class="cstat-no" title="statement not covered" >    this.defaults.baseURL = baseURL</span>
-  },
-<span class="fstat-no" title="function not covered" >  se</span>tHeader (name, value, scopes = <span class="branch-0 cbranch-no" title="branch not covered" >'common')</span> {
-<span class="cstat-no" title="statement not covered" >    for (let scope of Array.isArray(scopes) ? scopes : [ scopes ]) {</span>
-<span class="cstat-no" title="statement not covered" >      if (!value) {</span>
+  setBaseURL (baseURL) {
+    this.defaults.baseURL = baseURL
+<span class="fstat-no" title="function not covered" >  },</span>
+  se<span class="cstat-no" title="statement not covered" >tHeader (name, value, scopes = '</span>common') {
+    for (let scope of Array.isArray(scopes) ? scopes : [ scopes ]) {
+<span class="fstat-no" title="function not covered" ></span>      if (!value) {<span class="branch-0 cbranch-no" title="branch not covered" ></span>
 <span class="cstat-no" title="statement not covered" >        delete this.defaults.headers[scope][name];</span>
 <span class="cstat-no" title="statement not covered" >        return</span>
-      }
-<span class="cstat-no" title="statement not covered" >      this.defaults.headers[scope][name] = value</span>
+      }<span class="cstat-no" title="statement not covered" ></span>
+      th<span class="cstat-no" title="statement not covered" >is.defa</span>ults.headers[scope][name] = value
     }
+  },<span class="cstat-no" title="statement not covered" ></span>
+  setToken (token, type, scopes = 'common') {
+    const value = !token ? null : (type ? type + ' ' : '') + token
+<span class="fstat-no" title="function not covered" ></span>    this.setHeader('Authorization'<span class="branch-0 cbranch-no" title="branch not covered" >, value, </span>scopes)
+  },<span class="cstat-no" title="statement not covered" ></span>
+  on<span class="cstat-no" title="statement not covered" >Request(fn) {</span>
+    this.interceptors.request.use(config =&gt; fn(config) || config)
   },
-<span class="fstat-no" title="function not covered" >  se</span>tToken (token, type, scopes = <span class="branch-0 cbranch-no" title="branch not covered" >'common')</span> {
-    const value = <span class="cstat-no" title="statement not covered" >!token ? null : (type ? type + ' ' : '') + token</span>
-<span class="cstat-no" title="statement not covered" >    this.setHeader('Authorization', value, scopes)</span>
+  onResponse(fn) {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    this.interceptors.response.use(response =&gt; fn(response) || response)
   },
-  onRequest(fn) {
-    this.interceptors.request.use(<span class="fstat-no" title="function not covered" >co</span>nfig =&gt; <span class="cstat-no" title="statement not covered" >fn(config) || config)</span>
+  onRequestError(fn) {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    this.interceptors.request.use(undefined, error =&gt; fn(error) || Promise.reject(error))
   },
-  onResponse(fn) {
-    this.interceptors.response.use(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; <span class="cstat-no" title="statement not covered" >fn(response) || response)</span>
+  onResponseError(fn) {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+    this.interceptors.response.use(undefined, error =&gt; fn(error) || Promise.reject(error))
   },
-  onRequestError(fn) {
-    this.interceptors.request.use(undefined, <span class="fstat-no" title="function not covered" >er</span>ror =&gt; <span class="cstat-no" title="statement not covered" >fn(error) || Promise.reject(error))</span>
-  },
-  onResponseError(fn) {
-    this.interceptors.response.use(undefined, <span class="fstat-no" title="function not covered" >er</span>ror =&gt; <span class="cstat-no" title="statement not covered" >fn(error) || Promise.reject(error))</span>
-  },
-  onError(fn) {
+  onError(fn) {<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
     this.onRequestError(fn)
     this.onResponseError(fn)
   },
-<span class="fstat-no" title="function not covered" >  cr</span>eate(options) {
-<span class="cstat-no" title="statement not covered" >    return createAxiosInstance(defu(options, this.defaults))</span>
-  }
-}
+  create(options) {
+    return createAxiosInstance(defu(options, this.defaults))
+<span class="fstat-no" title="function not covered" >  }</span>
+}<span class="cstat-no" title="statement not covered" ></span>
 &nbsp;
 // Request helpers ($get, $post, ...)
 for (let method of ['request', 'delete', 'get', 'head', 'options', 'post', 'put', 'patch']) {
-  axiosExtra['$' + method] = <span class="fstat-no" title="function not covered" >fu</span>nction () { <span class="cstat-no" title="statement not covered" >return this[method].apply(this, arguments).then(<span class="fstat-no" title="function not covered" >re</span>s =&gt; <span class="cstat-no" title="statement not covered" >res &amp;&amp; res.data)</span> </span>}
+  axiosExtra['$' + method] = function () { return this[method].apply(this, arguments).then(res =&gt; res &amp;&amp; res.data) }
 }
-&nbsp;
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span>
 const extendAxiosInstance = axios =&gt; {
   for (let key in axiosExtra) {
     axios[key] = axiosExtra[key].bind(axios)
@@ -491,63 +499,66 @@ const createAxiosInstance = axiosOptions =&gt; {
 }
 &nbsp;
 const setupProgress = (axios) =&gt; {
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (process.server) {
-<span class="cstat-no" title="statement not covered" >    return</span>
-  }
-&nbsp;
+  if (process.server) {
+    return
+  <span class="missing-if-branch" title="if path not taken" >I</span>}
+<span class="cstat-no" title="statement not covered" ></span>
   // A noop loading inteterface for when $nuxt is not yet ready
   const noopLoading = {
-    finish: <span class="fstat-no" title="function not covered" >()</span> =&gt; { },
-    start: <span class="fstat-no" title="function not covered" >()</span> =&gt; { },
-    fail: <span class="fstat-no" title="function not covered" >()</span> =&gt; { },
-    set: <span class="fstat-no" title="function not covered" >()</span> =&gt; { }
+    finish: () =&gt; { },
+    start: () =&gt; { },
+    fail: ()<span class="fstat-no" title="function not covered" > =</span>&gt; { },
+    set: ()<span class="fstat-no" title="function not covered" > =</span>&gt; { }
+  }<span class="fstat-no" title="function not covered" ></span>
+<span class="fstat-no" title="function not covered" ></span>
+  const $loading = () =&gt; {
+    const $nuxt = typeof window !== 'undefined' &amp;&amp; window['$nuxt']
+    return ($nuxt &amp;<span class="fstat-no" title="function not covered" >&amp; </span>$nux<span class="cstat-no" title="statement not covered" >t.$loading &amp;&amp; $nuxt.$loading.set) ? $nuxt.$loading : noopLoading</span>
   }
 &nbsp;
-  const $loading = <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >($nuxt &amp;&amp; $nuxt.$loading &amp;&amp; $nuxt.$loading.set) ? $nuxt.$loading : noopLoading</span>
-&nbsp;
   let currentRequests = 0
-&nbsp;
-  axios.onRequest(<span class="fstat-no" title="function not covered" >co</span>nfig =&gt; {
-<span class="cstat-no" title="statement not covered" >    if (config &amp;&amp; config.progress === false) {</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
+<span class="fstat-no" title="function not covered" ></span>
+  ax<span class="cstat-no" title="statement not covered" >ios.onRequest(config =&gt; {</span>
+    if<span class="cstat-no" title="statement not covered" > (confi</span>g &amp;&amp; config.progress === false) {
+      return
     }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    currentRequests++</span>
+<span class="cstat-no" title="statement not covered" ></span>
+    currentRequests++
   })
-&nbsp;
-  axios.onResponse(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; {
-<span class="cstat-no" title="statement not covered" >    if (response &amp;&amp; response.config &amp;&amp; response.config.progress === false) {</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
+<span class="fstat-no" title="function not covered" ></span>
+  ax<span class="cstat-no" title="statement not covered" >ios.onResponse(response =&gt; {</span>
+    if<span class="cstat-no" title="statement not covered" > (respo</span>nse &amp;&amp; response.config &amp;&amp; response.config.progress === false) {
+      return
     }
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    currentRequests--</span>
-<span class="cstat-no" title="statement not covered" >    if (currentRequests &lt;= 0) {</span>
+    if<span class="cstat-no" title="statement not covered" > (currentRequests &lt;=</span> 0) {
 <span class="cstat-no" title="statement not covered" >      currentRequests = 0</span>
-<span class="cstat-no" title="statement not covered" >      $loading().finish()</span>
+      $loading().finish()
     }
   })
-&nbsp;
-  axios.onError(<span class="fstat-no" title="function not covered" >er</span>ror =&gt; {
-<span class="cstat-no" title="statement not covered" >    if (error &amp;&amp; error.config &amp;&amp; error.config.progress === false) {</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
+<span class="fstat-no" title="function not covered" ></span>
+  ax<span class="cstat-no" title="statement not covered" >ios.onError(error =&gt; {</span>
+    if<span class="cstat-no" title="statement not covered" > (error</span> &amp;&amp; error.config &amp;&amp; error.config.progress === false) {
+      return
     }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    currentRequests--</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    if (Axios.isCancel(error)) {</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
+<span class="cstat-no" title="statement not covered" ></span>
+    currentRequests--
+<span class="cstat-no" title="statement not covered" ></span>
+    if<span class="cstat-no" title="statement not covered" > (Axios</span>.isCancel(error)) {
+      return
     }
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    $loading().fail()</span>
-<span class="cstat-no" title="statement not covered" >    $loading().finish()</span>
+    $loading().finish()
   })
-&nbsp;
-  const onProgress = <span class="fstat-no" title="function not covered" >e </span>=&gt; {
-<span class="cstat-no" title="statement not covered" >    if (!currentRequests) {</span>
-<span class="cstat-no" title="statement not covered" >      return</span>
-    }
-    const progress = (<span class="cstat-no" title="statement not covered" >(e.loaded * 100) / (e.total * currentRequests))</span>
-<span class="cstat-no" title="statement not covered" >    $loading().set(Math.min(100, progress))</span>
+<span class="fstat-no" title="function not covered" ></span>
+  co<span class="cstat-no" title="statement not covered" >nst onProgress = e =&gt; {</span>
+    if<span class="cstat-no" title="statement not covered" > (!curr</span>entRequests) {
+      return
+    }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >    const progress = ((e.loaded * 100) / (e.</span>total * currentRequests))
+    $loading().set(Math.min(100, progress))
   }
 &nbsp;
   axios.defaults.onUploadProgress = onProgress
@@ -557,15 +568,19 @@ const setupProgress = (axios) =&gt; {
 export default (ctx, inject) =&gt; {
   // baseURL
   const baseURL = process.browser
-      ? 'http://localhost:3000/'
-      : (<span class="branch-1 cbranch-no" title="branch not covered" >process.env._AXIOS_BASE_URL_ || 'http://localhost:3000/')</span>
+      ? '<span class="branch-1 cbranch-no" title="branch not covered" >http://localhost:3000'</span>
+      : (process.env._AXIOS_BASE_URL_ || 'http://localhost:3000')
 &nbsp;
   // Create fresh objects for all default header scopes
   // Axios creates only one which is shared across SSR requests!
   // https://github.com/mzabriskie/axios/blob/master/lib/defaults.js
   const headers = {
     "common": {
-        "Accept": "application/json, text/plain, */*"
+        "Accept": "application/json, text/plain, */*",
+        "client": "",
+        "access-token": "",
+        "uid": "",
+        "token-type": ""
     },
     "delete": {},
     "get": {},
@@ -576,22 +591,22 @@ export default (ctx, inject) =&gt; {
 }
 &nbsp;
   const axiosOptions = {
-    baseURL,
-    headers
-  }
-&nbsp;
+  <span class="missing-if-branch" title="if path not taken" >I</span>  baseURL,<span class="branch-2 cbranch-no" title="branch not covered" ><span class="branch-1 cbranch-no" title="branch not covered" ></span></span>
+    headers<span class="cstat-no" title="statement not covered" ></span>
+  }<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" ></span>
   // Proxy SSR request headers headers
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (process.server &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >ctx.req </span>&amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >ctx.req.headers)</span> {
-    const reqHeaders = <span class="cstat-no" title="statement not covered" >{ ...ctx.req.headers }</span>
-<span class="cstat-no" title="statement not covered" >    for (let h of ["accept","host","cf-ray","cf-connecting-ip","content-length","content-md5","content-type"]) {</span>
-<span class="cstat-no" title="statement not covered" >      delete reqHeaders[h]</span>
+  if<span class="cstat-no" title="statement not covered" > (process.server &amp;&amp; ctx.req &amp;&amp; ctx.req.headers) {</span>
+    const reqHeaders = { ...ctx.req.headers }
+    for (let h of ["accept","host","cf-ray","cf-connecting-ip","content-length","content-md5","content-type"]) {
+  <span class="missing-if-branch" title="if path not taken" >I</span>    delete reqHeaders[h]
     }
-<span class="cstat-no" title="statement not covered" >    axiosOptions.headers.common = { ...reqHeaders, ...axiosOptions.headers.common }</span>
+<span class="cstat-no" title="statement not covered" >    axiosOptions.headers.common = { ...reqHeaders, ...axiosOptions.he</span>aders.common }
   }
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (process.server) {
+  if (process.server) {
     // Don't accept brotli encoding because Node can't parse it
-<span class="cstat-no" title="statement not covered" >    axiosOptions.headers.common['accept-encoding'] = 'gzip, deflate'</span>
+    axiosOptions.headers.common['accept-encoding'] = 'gzip, deflate'
   }
 &nbsp;
   const axios = createAxiosInstance(axiosOptions)
@@ -607,7 +622,7 @@ export default (ctx, inject) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Jun 05 2020 05:08:42 GMT+0000 (Coordinated Universal Time)
+                at Sat Jun 27 2020 06:26:31 GMT+0000 (Coordinated Universal Time)
             </div>
         </div>
         <script src="../prettify.js"></script>
